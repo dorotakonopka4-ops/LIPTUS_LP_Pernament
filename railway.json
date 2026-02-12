@@ -1,0 +1,42 @@
+{
+  "name": "liptus-lp",
+  "services": [
+    {
+      "name": "liptus-lp-frontend",
+      "type": "static",
+      "buildCommand": "pnpm install && pnpm build",
+      "startCommand": "serve -s dist/public",
+      "root": "./",
+      "environment": {
+        "VITE_APP_ID": "${{VITE_APP_ID}}",
+        "VITE_ANALYTICS_ENDPOINT": "${{VITE_ANALYTICS_ENDPOINT}}",
+        "VITE_ANALYTICS_WEBSITE_ID": "${{VITE_ANALYTICS_WEBSITE_ID}}"
+      }
+    },
+    {
+      "name": "liptus-lp-backend",
+      "type": "app",
+      "buildCommand": "pnpm install && pnpm build",
+      "startCommand": "pnpm start",
+      "root": "./",
+      "environment": {
+        "PORT": "3000",
+        "SALESMANAGO_CLIENT_ID": "${{SALESMANAGO_CLIENT_ID}}",
+        "SALESMANAGO_API_KEY": "${{SALESMANAGO_API_KEY}}",
+        "SALESMANAGO_API_SECRET": "${{SALESMANAGO_API_SECRET}}",
+        "SALESMANAGO_OWNER_EMAIL": "${{SALESMANAGO_OWNER_EMAIL}}",
+        "SALESMANAGO_ENDPOINT": "${{SALESMANAGO_ENDPOINT}}",
+        "JWT_SECRET": "${{JWT_SECRET}}",
+        "DATABASE_URL": "${{MYSQL_URL}}"
+      },
+      "dependsOn": ["liptus-lp-database"]
+    },
+    {
+      "name": "liptus-lp-database",
+      "type": "mysql",
+      "environment": {
+        "MYSQL_VERSION": "8.0"
+      }
+    }
+  ]
+}
